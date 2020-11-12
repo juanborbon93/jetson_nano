@@ -34,7 +34,7 @@ EXPOSE 5000
 RUN pip3 install jupyter jupyterlab --verbose
 # RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager@2
 RUN jupyter lab --generate-config
-RUN python3 -c "from notebook.auth.security import set_password; set_password('chico','/root/.jupyter/jupyter_notebook_config.json')"
+RUN python3 -c "from notebook.auth.security import set_password; set_password('nvidia','/root/.jupyter/jupyter_notebook_config.json')"
 RUN mkdir /opt/app
 WORKDIR /opt/app
 ENV PATH /opt/conda/bin:$PATH
