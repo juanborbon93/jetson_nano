@@ -23,6 +23,8 @@ RUN apt-get update && \
           openmpi-common \
 		  nodejs \
 		  npm \
+		  gnupg \
+		  software-properties-common \
 		  protobuf-compiler \
           libprotoc-dev \
 		llvm-9 \
@@ -30,12 +32,15 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/*
 EXPOSE 8888
 EXPOSE 5000
-
-RUN pip3 install jupyter jupyterlab --verbose
+RUN mkdir /opt/app
+ADD ./installLibrealsense /opt/app/installLibrealsense
+WORKDIR /opt/app/installLibrealsense
+RUN ./installLibrealsense.sh
+RUN pip3 install pyrealsense2-aarch64
+RUN pip3 install jupyter jupyterlab
 # RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager@2
 RUN jupyter lab --generate-config
 RUN python3 -c "from notebook.auth.security import set_password; set_password('nvidia','/root/.jupyter/jupyter_notebook_config.json')"
-RUN mkdir /opt/app
 WORKDIR /opt/app
 ENV PATH /opt/conda/bin:$PATH
 RUN echo "source activate base" > ~/.bashrc
